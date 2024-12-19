@@ -1,0 +1,173 @@
+body {
+    background: orange; /* Background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.form-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.add-item-text {
+	margin-top: 35px;
+    cursor: pointer;
+    color: #4981ff;
+    padding: 6px 5px;
+}
+.form-content {
+    padding: 0 70px; /* Padding for form content */
+}
+.form-group {
+    margin-top: 25px;
+}
+#dados-gerais{
+    margin-top: 20px;
+}
+input, select, textarea {
+    background-color: #F1F4F8 !important; /* Input background color */
+    border-radius: 40px !important;
+    height: 40px; /* Set the desired height */
+}
+.form-group label{
+    margin-left: 12px;
+    font-weight: 450;
+}
+.row{
+    margin-top:10px;
+}
+.form-control{
+    display: inline !important;
+}
+.form-control::placeholder {
+    color: #a9a9a9; /* Placeholder text color */
+}
+.text-center{
+
+margin-top: 30px;
+
+}
+.btn-primary {
+    background-color: #4CAF50;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #45a049;
+}
+button.botao {
+    width: 30%;
+    margin-top: 17px;   
+    background-color: #06C597;
+    height: 40px;
+
+}
+#icon {
+    margin-top: 4%;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+.delete-btn {
+    color: #e74c3c;
+}
+.delete-btn:hover {
+    color: #c0392b;
+    transform: scale(1.1);
+}
+.delete-btn i {
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+.clean-btn {
+    color: #3498db;
+}
+.clean-btn:hover {
+    color: #2980b9;
+    transform: scale(1.1);
+}
+.clean-btn i {
+    transition: transform 0.3s ease;
+}
+.clean-btn:hover i {
+    transform: rotate(180deg);
+}
+
+.wizard {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping */
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+.wizard-step {
+    text-align: center;
+    position: relative;
+}
+.wizard-step .connector {
+    position: absolute;
+    top: 23%;
+    left: 95%;
+    width: 224px;
+    height: 3px; /* Thicker line */
+    background: #E2E2E2; /* Black color */
+    transform: translateY(-50%);
+}
+.wizard-step .circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #F1F4F8;
+    display: inline-block;
+    line-height: 30px;
+    color: #ccc;
+    margin-bottom: 5px;
+}
+.wizard-step.active .circle {
+    background: orange; /* Active step color */
+    color: white;
+}
+.wizard-step .label {
+    display: block;
+    font-weight: 630;
+}
+.form-row {
+    display: flex;
+    gap: 6px; /* Space between form groups */
+    margin-top: -20px;
+}
+.form-row .quantity-group {
+    width: 20%;
+}
+.form-row .equip-name {
+    width: 50%;
+}
+.form-row .item-codigo {
+    width: 20%;
+}
+
+.form-container {
+    overflow-y: auto;
+}
+.form-container::-webkit-scrollbar {
+    width: 15px;
+}
+.form-container::-webkit-scrollbar-thumb {
+    background-color: #0091ea;
+    border-radius: 10px;
+}
+.form-container::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+.form-container::-webkit-scrollbar-thumb:hover {
+    background-color: #007bb5;
+}
