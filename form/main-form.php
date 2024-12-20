@@ -83,7 +83,7 @@ $direcao_options = fetchDirecao($conn);
                     <div class="form-group">
                         <label for="direcao">Direção</label>
                         <select class="form-control" name="direcao[]" id="direcao"  required>
-                            <option value="" class="default">Escolha a sua Direção</option>
+                            <option value="" class="default">- Select -</option>
                             <?php echo $direcao_options; ?>
                         </select>
                         <span class="error-message" id="direcao-error"></span>
@@ -91,7 +91,7 @@ $direcao_options = fetchDirecao($conn);
                     <div class="form-group">
                         <label for="secretaria">Secretária</label>
                         <select class="form-control" name="secretaria[]" id="secretaria" placeholder="Escolha a sua Secretaria" required>
-                            <option value="" class="default">Escolha a sua Secretaria</option>
+                            <option value="" class="default">- Select -</option>
                             <?php echo $secretarias_options; ?>
                         </select>
                         <span class="error-message" id="secretaria-error"></span>
@@ -116,20 +116,24 @@ $direcao_options = fetchDirecao($conn);
                 <div id="equipamentos" style="display: none">
                     <h4 class="subtitle">Equipamento a Pedir</h4>
                     <div id="items-container">
+                        <div id="item-labels" style="margin-bottom: -20px;">
+                            <div class="form-group">
+                                <label for="item-code">Código Bem</label>
+                                <label for="item-name" style="margin-left: 120px;">Nome do Item</label>
+                                <label for="quantity" style="margin-left: 380px;">Quantidade</label>
+                            </div>
+                        </div>
                         <div class="form-row" id="item-row">
                             <div class="form-group item-codigo">
-                                <label for="item-code">Código Bem</label>
-                                <input type="number" class="form-control" id="item-code" placeholder="#Num" required />
+                                <input type="number" class="form-control item-code" id="item-code" placeholder="#Num" required />
                                 <span class="error-message" id="item-code-error"></span>
                             </div>
                             <div class="form-group equip-name">
-                                <label for="item-name">Nome do Item</label>
-                                <input type="text" class="form-control" id="item-name" placeholder="Digite o nome do item" required />
+                                <input type="text" class="form-control item-name" id="item-name" placeholder="Digite o nome do item" required />
                                 <span class="error-message" id="item-name-error"></span>
                             </div>
                             <div class="form-group quantity-group">
-                                <label for="quantity">Quantidade</label>
-                                <input type="text" class="form-control" id="quantity" placeholder="Qty" required />
+                                <input type="text" class="form-control quantity" id="quantity" placeholder="Qty" required />
                                 <span class="error-message" id="quantity-error"></span>
                                 <input type="hidden" id="hiddenStock" name="hiddenStock" value="" />
                             </div>
@@ -150,15 +154,15 @@ $direcao_options = fetchDirecao($conn);
                     </div>
                     <div class="form-group justificacao">
                         <label for="destino">Local de Destino</label>
-                        <select name="destino[]" class="form-control" id="destino" required>
-                            <option value="">Escolha um destino</option>
+                        <select name="destino[]" class="form-control destino" id="destino" required>
+                            <option value="">- Select -</option>
                             <?php echo $direcao_options; ?>
                         </select>
                         <span class="error-message" id="destino-error"></span>
                     </div>
                     <div class="form-group">
                         <label for="justification">Justificação</label>
-                        <textarea id="justification" class="form-control" rows="4" placeholder="Please insert why you need this equipment" required></textarea>  
+                        <textarea id="justification" class="form-control justification" rows="4" placeholder="Please insert why you need this equipment" required></textarea>  
                         <span class="error-message" id="justification-error"></span>
                     </div>
 
@@ -174,10 +178,64 @@ $direcao_options = fetchDirecao($conn);
                 <div id="revisao" style="display: none">
 					<h4 class="subtitle">Revisão</h4>
 
-                    <div class="form-row" id="button-row">
-						<button type="button" class="submit-btn anterior" id="anterior-equipamentos" style="background-color: #6c757d;">Anterior</button>
-						<button type="button" class="submit-btn proximo" id="post" style="background-color: #00AA6D;">Submeter</button>
-					</div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="review-section">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="mb-3">Dados Pessoais</h5>
+                                        <div class="list-group">
+                                            <p class="list-group-item"><strong>Primeiro Nome:</strong> <span id="review-first-name"></span></p>
+                                            <p class="list-group-item"><strong>Último Nome:</strong> <span id="review-last-name"></span></p>
+                                            <p class="list-group-item"><strong>E-mail:</strong> <span id="review-email"></span></p>
+                                            <p class="list-group-item"><strong>VoIP:</strong> <span id="review-voip"></span></p>
+                                            <p class="list-group-item"><strong>Direção:</strong> <span id="review-direcao"></span></p>
+                                            <p class="list-group-item"><strong>Secretária:</strong> <span id="review-secretaria"></span></p>
+                                            <p class="list-group-item"><strong>Data do Pedido:</strong> <span id="review-request-date"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Equipment Request Section -->
+                        <div class="col-md-6 mb-4">
+                            <div class="review-section">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="mb-3">Equipamento a Pedir</h5>
+                                        <table class="table table-bordered table-hover table-striped" id="review-items-table">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Nome do Item</th>
+                                                    <th>Quantidade</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="review-items-tbody">
+                                                <!-- Item rows will be inserted here dynamically -->
+                                            </tbody>
+                                        </table>
+                                        <div class="list-group">
+                                            <p class="list-group-item"><strong>Local de Destino:</strong> <span id="review-destino"></span></p>
+                                            <p class="list-group-item"><strong>Justificação:</strong> <span id="review-justification"></span></p>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between mt-4">
+                                            <button class="btn btn-outline-primary" id="digital-sign-btn">Assinatura Digital</button>
+                                            <button class="btn btn-outline-secondary" id="generate-pdf-btn">Gerar PDF</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center" style="gap: 10px;">
+                            <button type="button" class="btn btn-primary botao" id="anterior-equipamentos" style="background-color: #6c757d;">Anterior</button>
+                            <button type="button" class="btn btn-primary botao" id="post" style="background-color: #00AA6D;">Submeter</button>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -187,7 +245,6 @@ $direcao_options = fetchDirecao($conn);
             </div>
         </form>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="../assets/js/manipulate-form.js"></script>
 </body>

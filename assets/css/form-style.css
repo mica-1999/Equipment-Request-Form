@@ -1,11 +1,15 @@
 body {
-    background: orange; /* Background color */
+    background-image: url('../images/background.jpg'); /* Replace with your image URL */
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents image repetition */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
 }
+
 .form-container {
     background: white;
     padding: 20px;
@@ -27,15 +31,20 @@ body {
     padding: 0 70px; /* Padding for form content */
 }
 .form-group {
-    margin-top: 25px;
+    margin-top: 10px;
 }
 #dados-gerais{
     margin-top: 20px;
 }
-input, select, textarea {
+input, select{
     background-color: #F1F4F8 !important; /* Input background color */
     border-radius: 40px !important;
     height: 40px; /* Set the desired height */
+}
+textarea{
+    background-color: #F1F4F8 !important; /* Input background color */
+    border-radius: 20px !important;
+    height: 169px;
 }
 .form-group label{
     margin-left: 12px;
@@ -70,7 +79,6 @@ button.botao {
 
 }
 #icon {
-    margin-top: 4%;
     background: none;
     border: none;
     font-size: 1.5rem;
@@ -129,11 +137,11 @@ button.botao {
     background: #F1F4F8;
     display: inline-block;
     line-height: 30px;
-    color: #ccc;
+    color: #9ea8ad;
     margin-bottom: 5px;
 }
 .wizard-step.active .circle {
-    background: orange; /* Active step color */
+    background: #1e90ff; /* Active step color */
     color: white;
 }
 .wizard-step .label {
@@ -141,9 +149,9 @@ button.botao {
     font-weight: 630;
 }
 .form-row {
+    margin-top: 15px;
     display: flex;
     gap: 6px; /* Space between form groups */
-    margin-top: -20px;
 }
 .form-row .quantity-group {
     width: 20%;
@@ -170,4 +178,15 @@ button.botao {
 }
 .form-container::-webkit-scrollbar-thumb:hover {
     background-color: #007bb5;
+}
+/* Error message style */
+span.error-message {
+	position: absolute;
+    color: #d9534f;  /* Red color for error messages */
+    font-size: 12px;  /* Slightly smaller text for error messages */
+    display: block;  /* Ensure it's a block element to sit on its own line */
+}
+#item-labels, .form-row {
+    display: flex;
+    justify-content: space-between;
 }
