@@ -83,7 +83,7 @@ $direcao_options = fetchDirecao($conn);
                     <div class="form-group">
                         <label for="direcao">Direção</label>
                         <select class="form-control" name="direcao[]" id="direcao"  required>
-                            <option value="" class="default">- Select -</option>
+                            <option value="" class="default">- Selecionar -</option>
                             <?php echo $direcao_options; ?>
                         </select>
                         <span class="error-message" id="direcao-error"></span>
@@ -91,7 +91,7 @@ $direcao_options = fetchDirecao($conn);
                     <div class="form-group">
                         <label for="secretaria">Secretária</label>
                         <select class="form-control" name="secretaria[]" id="secretaria" placeholder="Escolha a sua Secretaria" required>
-                            <option value="" class="default">- Select -</option>
+                            <option value="" class="default">- Selecionar -</option>
                             <?php echo $secretarias_options; ?>
                         </select>
                         <span class="error-message" id="secretaria-error"></span>
@@ -150,19 +150,19 @@ $direcao_options = fetchDirecao($conn);
                     </div>
                     <div style="margin-top: 20px;">
                         <img src="../assets/images/icn-plus-circle.svg" data-cmp-info="10" id="add-new-item" style="width: 30px;cursor: pointer;">
-                        <span class="add-item-text">Add Item</span>
+                        <span class="add-item-text">Novo</span>
                     </div>
                     <div class="form-group justificacao">
                         <label for="destino">Local de Destino</label>
                         <select name="destino[]" class="form-control destino" id="destino" required>
-                            <option value="">- Select -</option>
+                            <option value="">- Selecionar -</option>
                             <?php echo $direcao_options; ?>
                         </select>
                         <span class="error-message" id="destino-error"></span>
                     </div>
                     <div class="form-group">
                         <label for="justification">Justificação</label>
-                        <textarea id="justification" class="form-control justification" rows="4" placeholder="Please insert why you need this equipment" required></textarea>  
+                        <textarea id="justification" class="form-control justification" rows="4" placeholder="Explique porque necessita estes equipamentos" required></textarea>  
                         <span class="error-message" id="justification-error"></span>
                     </div>
 
@@ -246,6 +246,7 @@ $direcao_options = fetchDirecao($conn);
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="../assets/js/manipulate-form.js"></script>
 </body>
 </html>

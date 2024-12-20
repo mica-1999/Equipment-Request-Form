@@ -613,7 +613,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		const equipamentosFields = document.querySelectorAll("#equipamentos input[required], #equipamentos select[required], #equipamentos textarea[required]");
 		equipamentosFields.forEach(function(field) {
 			const fieldValue = field.value.trim();
-            console.log(fieldValue);
 			// Check if the field is valid or empty and apply red border if invalid
 			const result = validatePhaseTwo(field);
 			if (!result.isValid || fieldValue === '') {
@@ -672,34 +671,84 @@ document.addEventListener('DOMContentLoaded', function() {
         
     });
 
-    document.getElementById("generate-pdf-btn").addEventListener("click", function(event) {
+    document.getElementById("generate-pdf-btn").addEventListener("click", async function(event) {
         event.preventDefault(); // Prevent any default behavior
+        const pdfUrl = '../assets/pdf/template.pdf'; // Replace this with the path to your template PDF
         
-        var formData = {
+        const formData = {
             first_name: document.getElementById("review-first-name").innerText,
             last_name: document.getElementById("review-last-name").innerText,
             email: document.getElementById("review-email").innerText,
             voip: document.getElementById("review-voip").innerText,
             direcao: document.getElementById("review-direcao").innerText,
             secretaria: document.getElementById("review-secretaria").innerText,
-            request_date: document.getElementById("review-request-date").innerText
+            request_date: document.getElementById("review-request-date").innerText,
+            items: [],  // Add a field for the items
+            destino: document.getElementById("review-destino").innerText,
+            justification: document.getElementById("review-justification").innerText
         };
 
-        // Send AJAX request to generate PDF using Fetch API
-        fetch('../data/generate_pdf.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.blob())
-        .then(blob => {
-            var link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'review.pdf';
-            link.click();
-        })
-        .catch(error => console.error('Error generating PDF:', error));
+        // Extract items (this part comes from the table)
+        const items = [];
+        document.querySelectorAll('#review-items-tbody tr').forEach(function(row) {
+            const itemCode = row.querySelector('td:nth-child(1)').textContent;
+            const itemName = row.querySelector('td:nth-child(2)').textContent;
+            const quantity = row.querySelector('td:nth-child(3)').textContent;
+
+            items.push({ itemCode, itemName, quantity });
+        });
+
+        // Split the date into day, month, and year
+        const [year, month, day] = formData.request_date.split('-');
+        const dayFormatted = day.padStart(2, '0').slice(0, 2);  // Adds leading zero if day is a single digit, ensures max length of 2
+        const monthFormatted = month.padStart(2, '0').slice(0, 2);  // Adds leading zero if month is a single digit, ensures max length of 2
+
+        const yearShort = year.slice(-2); // Extracts "24" from "2024"
+        const requisicaoNumber = Math.floor(Math.random() * 999) + 1;
+
+         // Fetch the PDF document as an ArrayBuffer
+        const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
+        
+        // Load the existing PDF
+        const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
+        
+        // Get the form in the PDF
+        const form = pdfDoc.getForm();
+        
+        // Fill in the form fields with the provided data
+        form.getTextField('Gabinetes; Direção Regional; Outro').setText(formData.direcao);
+        form.getTextField('Presidência; Vice-Presidência; Secretaria Regional').setText(formData.secretaria);
+        form.getTextField('Dia da Elaboração').setText(dayFormatted); 
+        form.getTextField('Mês da Elaboração').setText(monthFormatted); 
+        form.getTextField('Ano de Elaboração').setText(yearShort); 
+        form.getTextField('SERVIÇO E LOCAL A QUE SE DESTINA Preenchimento Obrigatório 1').setText(formData.destino); 
+        form.getTextField('JUSTIFICAÇÃO Preenchimento Obrigatório 1').setText(formData.justification); 
+        form.getTextField('REQUISIÇÃO Nº').setText(requisicaoNumber.toString());
+
+        // Loop through each item and fill in the corresponding fields
+        items.forEach((item, index) => {
+            // Adjust the field names dynamically based on the row number (index)
+            const itemCodeField = `Código do bem ${index + 1}`;
+            const itemNameField = `Descrição do bem ${index + 1}`;
+            const quantityField = `Quantidade ${index + 1}`;
+
+            // Fill in the fields
+            form.getTextField(itemCodeField).setText(item.itemCode);
+            form.getTextField(itemNameField).setText(item.itemName);
+            form.getTextField(quantityField).setText(item.quantity);
+        });
+        // Serialize the modified PDF
+        const pdfBytes = await pdfDoc.save();
+        
+        // Create a Blob from the PDF bytes
+        const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+        
+        // Create a download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(pdfBlob);
+        downloadLink.download = 'filled_form.pdf';
+        
+        // Simulate a click on the link to download the PDF
+        downloadLink.click();
     });
 });
