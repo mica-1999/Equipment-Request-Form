@@ -337,14 +337,16 @@ document.addEventListener('DOMContentLoaded', function() {
     applyFocusAndInputStyles(document.querySelectorAll("#equipamentos input[required], #equipamentos select[required], #equipamentos textarea[required]"));
     const direcaoSelect = document.getElementById('direcao'); // Get the 'direcao' select element
     const secretariaSelect = document.getElementById('secretaria'); // Get the 'secretaria' select element
+    const destinoSelect = document.getElementById('destino'); // Get the 'secretaria' select element
     
 
 // -----------------------------------------------------~PHASE 1 OF FORM   ----------------------------------------------------------------------
     // Add change event listener to direcaoSelect to update and validate secretaria
 	direcaoSelect.addEventListener('change', function() {
 		const selectedOption = direcaoSelect.options[direcaoSelect.selectedIndex];  // Get the selected <option>
+        const selectedValue = direcaoSelect.value; // Get the selected value from 'direcao'
 		const direcao = selectedOption.text;  // Get the text inside the selected <option>
-		
+        destinoSelect.value = selectedValue; // Set the same value to 'destino'
 		if (direcao) {
 			// Perform an AJAX request to fetch the Secretaria based on the selected 'direcao'
 			fetch('../data/sel-secretaria.php', {
@@ -654,6 +656,23 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById('review-destino').innerText = document.getElementById('destino').options[document.getElementById('destino').selectedIndex].text;
 		document.getElementById('review-justification').innerText = document.getElementById('justification').value;
 
+        // Check the checkbox values and update visibility
+        var bcCheckbox = document.getElementById('checkbox1'); // Replace 'checkbox1' with your actual checkbox id
+        var biCheckbox = document.getElementById('checkbox2'); // Replace 'checkbox2' with your actual checkbox id
+
+        // Check if each checkbox is selected and update the display accordingly
+        if (bcCheckbox.checked) {
+            document.getElementById('bc').style.display = 'block'; // Show the "Bens de Capital" option
+        } else {
+            document.getElementById('bc').style.display = 'none'; // Hide if not selected
+        }
+
+        if (biCheckbox.checked) {
+            document.getElementById('bi').style.display = 'block'; // Show the "Bens Inventariáveis" option
+        } else {
+            document.getElementById('bi').style.display = 'none'; // Hide if not selected
+        }
+
         fade_in_out(document.getElementById("equipamentos"),document.getElementById("revisao"));
     });
 
@@ -737,6 +756,29 @@ document.addEventListener('DOMContentLoaded', function() {
             form.getTextField(itemNameField).setText(item.itemName);
             form.getTextField(quantityField).setText(item.quantity);
         });
+
+        // Check the state of the checkboxes and update the PDF form checkboxes
+        const bcCheckbox = document.getElementById('checkbox1'); // Bens de Capital checkbox
+        const biCheckbox = document.getElementById('checkbox2'); // Bens Inventariáveis checkbox
+
+        // Get the checkbox fields in the PDF
+        const bensDeCapitalField = form.getCheckBox('Check Box4'); // Make sure this matches the field name in the PDF
+        const bensInventariaveisField = form.getCheckBox('Check Box5'); // Make sure this matches the field name in the PDF
+
+        // Set the PDF form checkbox for "Bens de Capital"
+        if (bcCheckbox.checked) {
+            bensDeCapitalField.check(); // Check the checkbox
+        } else {
+            bensDeCapitalField.uncheck(); // Uncheck the checkbox
+        }
+
+        // Set the PDF form checkbox for "Bens Inventariáveis"
+        if (biCheckbox.checked) {
+            bensInventariaveisField.check(); // Check the checkbox
+        } else {
+            bensInventariaveisField.uncheck(); // Uncheck the checkbox
+        }
+
         // Serialize the modified PDF
         const pdfBytes = await pdfDoc.save();
         

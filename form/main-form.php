@@ -152,19 +152,43 @@ $direcao_options = fetchDirecao($conn);
                         <img src="../assets/images/icn-plus-circle.svg" data-cmp-info="10" id="add-new-item" style="width: 30px;cursor: pointer;">
                         <span class="add-item-text">Novo</span>
                     </div>
-                    <div class="form-group justificacao">
-                        <label for="destino">Local de Destino</label>
-                        <select name="destino[]" class="form-control destino" id="destino" required>
-                            <option value="">- Selecionar -</option>
-                            <?php echo $direcao_options; ?>
-                        </select>
-                        <span class="error-message" id="destino-error"></span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group justificacao">
+                                <label for="destino">Local de Destino</label>
+                                <select name="destino[]" class="form-control destino" id="destino" required>
+                                    <option value="">- Selecionar -</option>
+                                    <?php echo $direcao_options; ?>
+                                </select>
+                                <span class="error-message" id="destino-error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="checkboxes" style="justify-content: center;align-items: center;">Tipologia dos Bens (Optional)</label><br>
+                                <div style="display: flex; align-items: center;justify-content: center;">
+                                    <div class="checkbox-wrapper-2">
+                                        <input type="checkbox" id="checkbox1" name="checkbox1" class="ikxBAC">
+                                    </div>
+                                    <label for="checkbox1" style="margin-right: 15px;">Bens de Capital (BC)</label>
+                                    <div class="checkbox-wrapper-2">
+                                        <input type="checkbox" id="checkbox2" name="checkbox2" class="ikxBAC">
+                                    </div>
+                                    <label for="checkbox2">Bens Inventariáveis (BI)</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
                     <div class="form-group">
                         <label for="justification">Justificação</label>
                         <textarea id="justification" class="form-control justification" rows="4" placeholder="Explique porque necessita estes equipamentos" required></textarea>  
                         <span class="error-message" id="justification-error"></span>
                     </div>
+
+                    <!-- BC and BI Checkboxes -->
+   
 
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-center" style="gap: 10px;">
@@ -218,6 +242,8 @@ $direcao_options = fetchDirecao($conn);
                                         </table>
                                         <div class="list-group">
                                             <p class="list-group-item"><strong>Local de Destino:</strong> <span id="review-destino"></span></p>
+                                            <p class="list-group-item" id="bc" style="display:none;"><strong>Tipologia de Bens:</strong> <span >Bens de Capital</span></p>
+                                            <p class="list-group-item" id="bi" style="display:none;"><strong>Tipologia de Bens:</strong> <span >Bens Inventariáveis</span></p>
                                             <p class="list-group-item"><strong>Justificação:</strong> <span id="review-justification"></span></p>
                                         </div>
 
