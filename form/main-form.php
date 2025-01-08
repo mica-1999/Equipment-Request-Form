@@ -41,7 +41,7 @@ $direcao_options = fetchDirecao($conn);
                 <div class="label">Revisão</div>
             </div>
         </div>
-        <form action="" method="post">
+        <form action="/submit-form" method="post">
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <div class="form-content">
 
